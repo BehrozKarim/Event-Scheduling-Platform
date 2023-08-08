@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <div class="container" style="width: 800px; margin:0 auto;">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        <table >
+            <thead>
+                <tr role="row">
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                  <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ event.title }}</td>
+                      <td>{{ event.type }}</td>
+                      <td>{{ event.description }}</td>
+                      <td>{{ event.date }}</td>
+                      <td>
+                         <a class="btn btn-info" href="{% url 'event-edit' event.pk %}" title="edit"> Edit
+                            <i class="fa fa-edit"></i>
+                        </a>
+                       </td>
+                  </tr>
+                 
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        |
+        <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+</body>
+</html>
