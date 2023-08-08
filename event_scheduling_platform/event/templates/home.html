@@ -33,6 +33,12 @@
                          <a class="btn btn-info" href="{% url 'event-edit' event.pk %}" title="edit"> Edit
                             <i class="fa fa-edit"></i>
                         </a>
+
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'event-delete' event.pk %}" title="delete"> Delete
+                            <i class="fa fa-trash"></i>
+                        </a>
                        </td>
                   </tr>
                  

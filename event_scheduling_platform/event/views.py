@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from .models import Event
 from .serializers import EventSerializer
 from .forms import EventForm, EventCreateMultiForm
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -55,6 +55,12 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     fields = ['type', 'title', 'organizer', 'description', 'date', 'time', 'location']
     template_name = 'edit_event.html'
+
+class EventDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = 'login'
+    model = Event
+    template_name = 'delete_event.html'
+    success_url = reverse_lazy('event-list')
 
 
 # Home Route
