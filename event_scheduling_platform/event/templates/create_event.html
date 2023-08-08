@@ -1,0 +1,6 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-success ml-2" type="submit">Create Event</button>
+</form>
+{{ form.media }}
