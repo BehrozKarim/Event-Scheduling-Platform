@@ -39,6 +39,11 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     fields = ['type', 'title', 'organizer', 'description', 'date', 'time', 'location']
     template_name = 'edit_event.html'
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.organizer != request.user:
+            return redirect('event-list')
+        return super(EventUpdateView, self).dispatch(request, *args, **kwargs)
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):
     login_url = 'login'
