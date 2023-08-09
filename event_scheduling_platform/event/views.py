@@ -9,6 +9,8 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
@@ -61,7 +63,8 @@ def search_feature(request):
         # Retrieve the search query entered by the user
         search_query = request.POST['search_query']
         # Filter your model by the search query
-        events = Event.objects.filter(title__contains=search_query)
+        events = Event.objects.filter(Q(title__contains=search_query) | Q(description__contains=search_query) | Q(location__contains=search_query) | Q(type__contains=search_query) | Q(organizer__username__contains=search_query) | Q(date__contains=search_query) | Q(time__contains=search_query))
+        
         return render(request, 'event_search.html', {'query':search_query, 'events':events})
     else:
         return render(request, 'home.html',{})
