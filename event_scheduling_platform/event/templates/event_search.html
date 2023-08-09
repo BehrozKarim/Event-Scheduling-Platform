@@ -2,11 +2,11 @@
     <div>
         <div>
             <!-- loop through search query -->
-            {% for post in posts %}
+            {% for event in events %}
             {% csrf_token %}
             <div>
                 <!-- return search query -->
-                <p>{{post.title}}</p>
+                <p>{{event.title}}</p>
             </div>
         {% endfor %}
         </div>

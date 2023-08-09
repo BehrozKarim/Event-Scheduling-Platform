@@ -1,0 +1,17 @@
+<table >
+    <thead>
+        <tr role="row">
+            <th>#</th>
+            <th>username</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attendee in attendees %}
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ attendee.user }}</td>
+          </tr>
+         
+        {% endfor %}
+    </tbody>
+</table>

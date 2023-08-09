@@ -31,6 +31,9 @@
                     <th>Date</th>
                     <th></th>
                     <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +52,21 @@
                        </td>
                        <td>
                         <a class="btn btn-danger" href="{% url 'event-delete' event.pk %}" title="delete"> Delete
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'attend-event' event.pk%}" title="add"> Attend
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'attendees-list' event.pk %}" title="view"> Attendee-List
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'unattend-event' event.pk %}" title="view"> Unattend-event
                             <i class="fa fa-trash"></i>
                         </a>
                        </td>

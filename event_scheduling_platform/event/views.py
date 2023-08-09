@@ -2,31 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from rest_framework import viewsets
-from .models import Event
+from .models import *
 from .serializers import EventSerializer
 from .forms import EventForm, EventCreateMultiForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-
-
-
-# @login_required(login_url='login')
-# def create_event(request):
-#     event_form = EventForm()
-
-#     if request.method == 'POST':
-#         event_form = EventForm(request.POST)
-
-#         if event_form.is_valid():
-#             ef = event_form.save()
-#             created_updated(Event, request)
-#             return redirect('event-list')
-#     context = {
-#         'form': event_form,
-#     }
-#     return render(request, 'events/create.html', context)
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
@@ -79,7 +61,26 @@ def search_feature(request):
         # Retrieve the search query entered by the user
         search_query = request.POST['search_query']
         # Filter your model by the search query
-        posts = Event.objects.filter(title__contains=search_query)
-        return render(request, 'event_search.html', {'query':search_query, 'posts':posts})
+        events = Event.objects.filter(title__contains=search_query)
+        return render(request, 'event_search.html', {'query':search_query, 'events':events})
     else:
         return render(request, 'home.html',{})
+
+def attend_event(request, pk):
+    print("attend_event", pk)
+    queryset = Attendee(user=request.user, event=Event.objects.get(pk=pk))
+    queryset.save()
+    print("After Save")
+    return redirect('event-list')
+
+def attendee_list(request, pk):
+    attendees = Attendee.objects.filter(event=pk)
+    return render(request, 'attendee_list.html', {'attendees':attendees})
+
+def unattend_event(request, pk):
+    attendees = Attendee.objects.filter(event=pk)
+    for attendee in attendees:
+        if attendee.user == request.user:
+            attendee.delete()
+            return redirect('event-list')
+    return redirect('event-list')
