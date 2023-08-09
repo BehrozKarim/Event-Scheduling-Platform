@@ -19,6 +19,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('event-list')
 
     def form_valid(self, form):
+        form['event'].instance.organizer = self.request.user
         evt = form['event'].save()
 
         return super().form_valid(form)
