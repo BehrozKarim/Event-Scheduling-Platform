@@ -50,6 +50,7 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = 'delete_event.html'
     success_url = reverse_lazy('event-list')
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if obj.organizer != request.user:
@@ -80,10 +81,12 @@ def search_feature(request):
         return render(request, 'home.html',{})
 
 def attend_event(request, pk):
-    print("attend_event", pk)
+    attendees = Attendee.objects.filter(event=pk)
+    for attendee in attendees:
+        if attendee.user == request.user:
+            return redirect('event-list')
     queryset = Attendee(user=request.user, event=Event.objects.get(pk=pk))
     queryset.save()
-    print("After Save")
     return redirect('event-list')
 
 def attendee_list(request, pk):
