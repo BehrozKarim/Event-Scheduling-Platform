@@ -50,6 +50,11 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = 'delete_event.html'
     success_url = reverse_lazy('event-list')
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.organizer != request.user:
+            return redirect('event-list')
+        return super(EventDeleteView, self).dispatch(request, *args, **kwargs)
 
 # User Register
 def register(request):
