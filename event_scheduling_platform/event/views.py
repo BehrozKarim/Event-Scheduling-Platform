@@ -71,3 +71,15 @@ def register(request):
             regForm.save()
             messages.success(request,'User has been registered.')
     return render(request,'registration/register.html',{'form':form})
+
+def search_feature(request):
+    # Check if the request is a post request.
+    print("search_feature", request.method)
+    if request.method == 'POST':
+        # Retrieve the search query entered by the user
+        search_query = request.POST['search_query']
+        # Filter your model by the search query
+        posts = Event.objects.filter(title__contains=search_query)
+        return render(request, 'event_search.html', {'query':search_query, 'posts':posts})
+    else:
+        return render(request, 'home.html',{})

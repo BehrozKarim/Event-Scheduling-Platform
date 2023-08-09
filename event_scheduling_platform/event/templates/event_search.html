@@ -1,0 +1,17 @@
+{% if query %}
+    <div>
+        <div>
+            <!-- loop through search query -->
+            {% for post in posts %}
+            {% csrf_token %}
+            <div>
+                <!-- return search query -->
+                <p>{{post.title}}</p>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <!-- return a message if the user does not enter a search query -->
+    <h1>Please enter a search query</h1>
+{% endif %}
