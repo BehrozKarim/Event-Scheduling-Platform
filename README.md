@@ -1,6 +1,8 @@
 # Event-Scheduling-Platform
 
 ## How To Setup On Linux
+Make sure you have python3 and Django installed.
+
 1. Clone This Project `git clone https://github.com/BehrozKarim/Event-Scheduling-Platform.git`
 2. Go to Project Directory `cd Event-Scheduling-Platform/event_scheduling_platform`
 3. Create a Virtual Environment `python3 -m venv env`
