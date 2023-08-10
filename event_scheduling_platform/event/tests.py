@@ -1,10 +1,10 @@
 from django.test import TestCase
-from .forms import NewUserForm
+from .forms import NewUserForm, EventForm
 from .models import Event, Attendee
 from django.urls import reverse
 
 
-class EventCreateViewTest(TestCase):
+class ViewTests(TestCase):
     def setUp(self):
         user_data = {
             'username': 'test_user',
@@ -131,3 +131,53 @@ class EventCreateViewTest(TestCase):
 
         response = self.client.get(reverse('unattend-event', kwargs={'pk': event.pk}))
         self.assertEqual(response.status_code, 302)
+
+class ModelTests(TestCase):
+    def setUp(self):
+        user_data = {
+            'username': 'test_user',
+            'email': 'first@gmail.com',
+            'password1': 'First@Second67',
+            'password2': 'First@Second67',
+        }
+
+        form = NewUserForm(data=user_data)
+        self.assertTrue(form.is_valid())
+        self.user = form.save()
+        self.assertEqual(self.user.username, 'test_user')
+        self.client.force_login(self.user)
+
+    def test_event_model(self):
+        event = Event.objects.create(
+            type='Conference',
+            title='Test Event',
+            date='2023-08-15',
+            time='12:00:00',
+            location='Test Location',
+            description='Test Description',
+            organizer=self.user,
+        )
+        self.assertEqual(event.title, 'Test Event')
+        self.assertEqual(event.type, 'Conference')
+        self.assertEqual(event.organizer, self.user)
+        self.assertEqual(event.description, 'Test Description')
+        self.assertEqual(event.date, '2023-08-15')
+        self.assertEqual(event.time, '12:00:00')
+        self.assertEqual(event.location, 'Test Location')
+    
+    def test_attendee_model(self):
+        event = Event.objects.create(
+            type='Conference',
+            title='Test Event',
+            date='2023-08-15',
+            time='12:00:00',
+            location='Test Location',
+            description='Test Description',
+            organizer=self.user,
+        )
+        attendee = Attendee.objects.create(
+            user=self.user,
+            event=event,
+        )
+        self.assertEqual(attendee.user, self.user)
+        self.assertEqual(attendee.event, event)
