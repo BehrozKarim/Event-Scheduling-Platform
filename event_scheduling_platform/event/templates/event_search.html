@@ -1,22 +1,29 @@
+<a href="{% url 'event-list' %}">Back</a>
 {% if query %}
     <div>
         <table >
-            <thead>
-                <tr role="row">
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>organizer</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
+            
+            {% if not events %}
+            <tr>
+                <td colspan="2">No Search Results Found</td>
+            </tr>
+            {% else %}
             <tbody>
+                <thead>
+                    <tr role="row">
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>organizer</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
                 {% for event in events %}
                   <tr>
                       <td>{{ forloop.counter }}</td>
@@ -59,6 +66,7 @@
                   </tr>
                  
                 {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </div>
