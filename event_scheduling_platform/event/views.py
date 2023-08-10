@@ -39,10 +39,6 @@ class EventListView(LoginRequiredMixin, ListView):
     context_object_name = 'events'
 
 
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
 class EventUpdateView(LoginRequiredMixin, UpdateView):
     '''
     This class is used to update an event.
