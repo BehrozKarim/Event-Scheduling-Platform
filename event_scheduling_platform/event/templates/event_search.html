@@ -1,15 +1,66 @@
 {% if query %}
     <div>
-        <div>
-            <!-- loop through search query -->
-            {% for event in events %}
-            {% csrf_token %}
-            <div>
-                <!-- return search query -->
-                <p>{{event.title}}</p>
-            </div>
-        {% endfor %}
-        </div>
+        <table >
+            <thead>
+                <tr role="row">
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>organizer</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                  <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ event.title }}</td>
+                      <td>{{ event.type }}</td>
+                      <td>{{ event.description }}</td>
+                      <td>{{ event.date }}</td>
+                      <td>{{ event.organizer }}</td>
+                      {% if event.organizer == user %}
+                      <td>
+                         <a class="btn btn-info" href="{% url 'event-edit' event.pk %}" title="edit"> Edit
+                            <i class="fa fa-edit"></i>
+                        </a>
+
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'event-delete' event.pk %}" title="delete"> Delete
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       {% else %}
+                       <td></td>
+                       <td></td>
+                          {% endif %}
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'attend-event' event.pk%}" title="add"> Attend
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'attendees-list' event.pk %}" title="view"> Attendee-List
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                       <td>
+                        <a class="btn btn-danger" href="{% url 'unattend-event' event.pk %}" title="view"> Unattend-event
+                            <i class="fa fa-trash"></i>
+                        </a>
+                       </td>
+                  </tr>
+                 
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% else %}
     <!-- return a message if the user does not enter a search query -->
