@@ -17,20 +17,24 @@ class Event(models.Model):
     type = models.CharField(max_length=20, choices=EVENT_TYPES, default='conference')
 
     def __str__(self):
+        '''
+        This function is used to return the title of the event.
+        '''
         return self.title
     
     def get_absolute_url(self):
+        '''
+        This function is used to return the url of the list of events.
+        '''
         return reverse.reverse('event-list')
     
-    def created_updated(model, request):
-        obj = model.objects.latest('pk')
-        if obj.created_by is None:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        obj.save()
 
 
 class Attendee(models.Model):
+    '''
+    This class is used to create an attendee.
+    '''
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
