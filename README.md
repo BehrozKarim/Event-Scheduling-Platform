@@ -12,3 +12,5 @@ Also install virtualenv using `python3 -m pip install --user virtualenv` if you 
 6. Migrate Database `python manage.py migrate`
 7. Create Super User `python manage.py createsuperuser`
 8. Finally Run The Project `python manage.py runserver`
+
+To run the tests use this command `python3 manage.py test event.tests`
