@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .forms import NewUserForm, EventForm
+from .forms import NewUserForm, EventForm, EventCreateMultiForm
 from .models import Event, Attendee
 from django.urls import reverse
 
@@ -181,3 +181,70 @@ class ModelTests(TestCase):
         )
         self.assertEqual(attendee.user, self.user)
         self.assertEqual(attendee.event, event)
+
+class FormTests(TestCase):
+    def setUp(self):
+        user_data = {
+            'username': 'test_user',
+            'email': 'first@gmail.com',
+            'password1': 'First@Second67',
+            'password2': 'First@Second67',
+        }
+
+        form = NewUserForm(data=user_data)
+        self.assertTrue(form.is_valid())
+        self.user = form.save()
+        self.assertEqual(self.user.username, 'test_user')
+        self.client.force_login(self.user)
+    
+    def test_event_form(self):
+        form_data = {
+            'type': 'conference',
+            'title': 'Test Event',
+            'description': 'Test Description',
+            'date': '2023-08-15',
+            'time': '12:00:00',
+            'location': 'Test Location',
+        }
+        form = EventForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        event = form.save(commit=False)
+        event.organizer = self.user
+        event.save()
+        self.assertEqual(event.title, 'Test Event')
+        self.assertEqual(event.type, 'conference')
+        self.assertEqual(event.organizer, self.user)
+        self.assertEqual(event.description, 'Test Description')
+        self.assertEqual(event.location, 'Test Location')
+    
+    def test_event_form_invalid(self):
+        form_data = {
+            'type': 'conference',
+            'title': 'Test Event',
+            'description': 'Test Description',
+            'date': '2023-08-15',
+            'time': '12:00:00',
+        }
+        form = EventForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_valid_form(self):
+        form_data = {
+            'event-type': 'conference',
+            'event-title': 'Test Event',
+            'event-description': 'Test Description',
+            'event-date': '2023-08-15',
+            'event-time': '12:00:00',
+            'event-location': 'Test Location',
+        }
+        form = EventCreateMultiForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        event = form['event'].save(commit=False)
+        event.organizer = self.user
+        event.save()
+        self.assertEqual(event.title, 'Test Event')
+        self.assertEqual(event.type, 'conference')
+        self.assertEqual(event.organizer, self.user)
+        self.assertEqual(event.description, 'Test Description')
+        self.assertEqual(event.location, 'Test Location')
+        
