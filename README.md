@@ -14,3 +14,12 @@ Also install virtualenv using `python3 -m pip install --user virtualenv` if you 
 8. Finally Run The Project `python manage.py runserver`
 
 To run the tests use this command `python3 manage.py test event.tests`
+
+## How to use Event Scheduler
+1. Go to `http://127.0.0.1:8000/ ` and login with the superuser credentials you created, or you can register a new user from there
+2. After logging in, you will be redirected to the home page where you can see all the events
+3. You can create a new event by clicking on the `Create Event` button on the top left corner
+4. You can edit or delete an event by clicking on the `Edit` or `Delete` button. These buttons will only be visible to the creator of the event
+5. You can decide to attend an event by clicking on the `Attend` button.
+6. You can view a list of attendees of an event by clicking on the `Attendees-list` button
+7. You want yourself to be removed from the attendees list, you can click on the `unattend` button
